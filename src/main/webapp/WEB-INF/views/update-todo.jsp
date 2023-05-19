@@ -21,7 +21,7 @@
             <a href="todo-list" class="float-right mb-3">Back to List</a>
 
             <h4>Adding new item to do:</h4>
-            <form:form action="add-todo" method="post" commandName="todo" class="m-5">
+            <form:form action="update-todo?id=${todo.id}" method="post" commandName="todo" class="m-5">
                 <fieldset class="form-group">
                     <form:label path="name">Name</form:label>
                     <form:input path="name" type="text" class="form-control"/>
@@ -37,8 +37,7 @@
                     <form:checkbox path="isCompleted" class="form-control"/>
                     <form:errors path="isCompleted" cssClass="text-danger" />
                 </fieldset>
-
-                <button type="submit" class="btn btn-outline-success float-right">Add Item</button>
+                <button type="submit" class="btn btn-outline-success float-right">Update Item</button>
             </form:form>
         </div>
 

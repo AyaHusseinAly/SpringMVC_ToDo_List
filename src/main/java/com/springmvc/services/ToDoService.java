@@ -32,14 +32,8 @@ public class ToDoService {
         for (int i = 0; i < todos.size(); i++) {
             if(todos.get(i).getId() == id) {
                 todos.remove(i);
-                count--;
             }
         }
-//        todos.forEach(todo -> {
-//            if(todo.getId() == id)
-//                todos.remove(todo);
-//        });
-
 //        Iterator<ToDo> iterator = todos.iterator();
 //        while (iterator.hasNext()) {
 //            ToDo todo = iterator.next();
@@ -47,5 +41,32 @@ public class ToDoService {
 //                iterator.remove();
 //            }
 //        }
+    }
+
+    public void updateToDo(int id, String name, String desc, Boolean isCompleted) {
+        int i = getToDoIndex(id);
+        ToDo todo = todos.get(i);
+        todo.setName(name);
+        todo.setDesc(desc);
+        todo.setIsCompleted(isCompleted);
+        todos.set(i,todo);
+    }
+
+    public ToDo getToDo(int id){
+        for (int i = 0; i < todos.size(); i++) {
+            if(todos.get(i).getId() == id) {
+                return todos.get(i);
+            }
+        }
+        return new ToDo();
+    }
+
+    public int getToDoIndex(int id){
+        for (int i = 0; i < todos.size(); i++) {
+            if(todos.get(i).getId() == id) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

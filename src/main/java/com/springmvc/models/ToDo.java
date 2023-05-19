@@ -1,10 +1,15 @@
 package com.springmvc.models;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class ToDo {
     private Integer id;
+    @NotBlank
     private String name;
+    @NotBlank
     @Size(min=6, message="Too short description is not allowed")
     private String desc;
     private Boolean isCompleted = false;

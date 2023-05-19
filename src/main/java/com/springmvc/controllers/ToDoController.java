@@ -5,10 +5,10 @@ import com.springmvc.services.ToDoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @SessionAttributes("todos")
@@ -25,7 +25,7 @@ public class ToDoController {
     @RequestMapping(value="/todo",method=RequestMethod.GET)
     public String deleteToDo(@RequestParam Integer id){
         todoService.deleteToDo(id);
-        return "redirect:/todo-list";
+        return "redirect:todo-list";
     }
 
     @RequestMapping(value="/add-todo",method=RequestMethod.GET)
@@ -35,7 +35,31 @@ public class ToDoController {
     }
 
     @RequestMapping(value="/add-todo",method=RequestMethod.POST)
-    public String postToDo(ToDo todo){
-        return "add-todo";
+    public String postToDo(@ModelAttribute("todo") @Valid ToDo todo, BindingResult result){
+        if(result.hasErrors()) {
+            return "add-todo";
+        }
+        todo.setId(++todoService.count);
+        todoService.addToDo(todo);
+        return "redirect:todo-list";
+
+
+    }
+
+    @RequestMapping(value="/update-todo",method=RequestMethod.GET)
+    public String updateToDo(ModelMap modelMap, @RequestParam int id){
+        modelMap.addAttribute("todo",todoService.getToDo(id));
+        return "update-todo";
+    }
+
+    @RequestMapping(value="/update-todo",method=RequestMethod.POST)
+    public String putToDo(@ModelAttribute("todo") @Valid ToDo todo, BindingResult result){
+        if(result.hasErrors()) {
+            return "update-todo";
+        }
+        todoService.updateToDo(todo.getId(), todo.getName(), todo.getDesc(), todo.getIsCompleted());
+        return "redirect:todo-list";
+
+
     }
 }
